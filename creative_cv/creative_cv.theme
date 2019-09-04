@@ -1,0 +1,245 @@
+<?php
+/**
+ * @file
+ * Contains theme override functions and preprocess functions
+ */
+
+use Drupal\Core\Template\RenderWrapper;
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
+use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\system\Form\ThemeSettingsForm;
+use Drupal\file\Entity\File;
+use Drupal\Core\Url;
+use Drupal\file\Plugin\Core\Entity\FileInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+  
+/**
+ * Implements hook_preprocess_page() for block templates.
+ */
+
+// global $theme_name, $path_to_creative_cv;
+$theme_name = \Drupal::theme()->getActiveTheme()->getName();
+$path_to_creative_cv = drupal_get_path('theme', 'creative_cv');
+
+function creative_cv_preprocess_page(&$variables) {
+  global $base_path;
+  $variables['profile_image_url'] =  $base_path . theme_get_setting('profile_image_url');
+
+  $variables['background_image_url'] =  $base_path . theme_get_setting('background_image_url');
+
+	$variables['show_social_icon'] = theme_get_setting('show_social_icon');
+  $variables['facebook_url'] = theme_get_setting('facebook_url');
+  $variables['google_plus_url'] = theme_get_setting('google_plus_url');
+  $variables['twitter_url'] = theme_get_setting('twitter_url');
+  $variables['linkedin_url'] = theme_get_setting('linkedin_url');
+  $variables['show_professional_icon'] = theme_get_setting('show_professional_icon');
+  $variables['hire_me_url'] = theme_get_setting('hire_me_url');
+  $variables['download_cv_url'] = theme_get_setting('download_cv_url');
+  $variables['show_user_profile'] = theme_get_setting('show_user_profile');
+  $variables['name'] = theme_get_setting('name');
+  $variables['specialization'] = theme_get_setting('specialization');
+}
+
+function creative_cv_preprocess_block(&$variables) {
+   $variables['address'] = theme_get_setting('address');
+   $variables['phone'] = theme_get_setting('phone');
+   $variables['email'] = theme_get_setting('email');
+}
+
+function creative_cv_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+
+	//Social Icon Link
+      $form['creative_cv_settings']['social_icon'] = array(
+        '#type' => 'details',
+        '#title' => t('Social Media Link'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['creative_cv_settings']['social_icon']['show_social_icon'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Show Social Icons'),
+        '#default_value' => theme_get_setting('show_social_icon'),
+        '#description'   => t("Show/Hide Social media links"),
+      );
+      $form['creative_cv_settings']['social_icon']['facebook_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Facebook URL'),
+        '#default_value' => theme_get_setting('facebook_url'),
+      );
+      $form['creative_cv_settings']['social_icon']['google_plus_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Google plus URL'),
+        '#default_value' => theme_get_setting('google_plus_url'),
+      );
+      $form['creative_cv_settings']['social_icon']['twitter_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Twitter URL'),
+        '#default_value' => theme_get_setting('twitter_url'),
+      );
+      $form['creative_cv_settings']['social_icon']['instagram_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Instagram URL'),
+        '#default_value' => theme_get_setting('instagram_url'),
+      );
+  //Professional Icon Link
+      $form['creative_cv_settings']['professional_icon'] = array(
+        '#type' => 'details',
+        '#title' => t('Professional Data Link'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['creative_cv_settings']['professional_icon']['show_professional_icon'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Show Professional Icons'),
+        '#default_value' => theme_get_setting('show_professional_icon'),
+        '#description'   => t("Show/Hide Professional Icon"),
+      );
+      $form['creative_cv_settings']['professional_icon']['hire_me_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Hire Me'),
+        '#default_value' => theme_get_setting('hire_me_url'),
+      );
+      $form['creative_cv_settings']['professional_icon']['download_cv_url'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Download CV'),
+        '#default_value' => theme_get_setting('download_cv_url'),
+      );
+  //User Profile Data
+      $form['creative_cv_settings']['user_profile'] = array(
+        '#type' => 'details',
+        '#title' => t('User Profile Details'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['creative_cv_settings']['user_profile']['show_user_profile'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Show User Profile Details'),
+        '#default_value' => theme_get_setting('show_user_profile'),
+        '#description'   => t("Show/Hide User Profile Details"),
+      );
+      $form['creative_cv_settings']['user_profile']['name'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Name'),
+        '#default_value' => theme_get_setting('name'),
+      );
+      $form['creative_cv_settings']['user_profile']['specialization'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Specialization'),
+        '#default_value' => theme_get_setting('specialization'),
+      );
+
+  //Footer Contact Details
+      $form['creative_cv_settings']['footer_address'] = array(
+        '#type' => 'details',
+        '#title' => t('Footer Contact Details'),
+        '#collapsible' => TRUE,
+        '#collapsed' => FALSE,
+      );
+      $form['creative_cv_settings']['footer_address']['address'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Address'),
+        '#default_value' => theme_get_setting('address'),
+      );
+      $form['creative_cv_settings']['footer_address']['phone'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Phone'),
+        '#default_value' => theme_get_setting('phone'),
+      );
+      $form['creative_cv_settings']['footer_address']['email'] = array(
+        '#type' => 'email',
+        '#title' => t('Email'),
+        '#default_value' => theme_get_setting('email'),
+      );
+
+  //Profile Image
+     $form['creative_cv_settings']['image_upload']  = array(
+      '#type' => 'details',
+      '#title' => t('Profile Image'),
+      '#description' => t('<p>please upload or enter the url of header profile image</p>'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      );
+      $form['creative_cv_settings']['image_upload']['profile_image_url'] = array(
+          '#type' => 'textfield',
+          '#title' => t('URL of the image'),
+          '#default_value' => theme_get_setting('profile_image_url'),
+          '#size' => 40,
+          '#maxlength' => 120,
+      );
+      $form['creative_cv_settings']['image_upload']['profile_image'] = array(
+        '#type' => 'file',
+        '#title' => t('Upload Profile Image'),
+        '#size' => 40,
+        '#attributes' => array('enctype' => 'multipart/form-data'),
+        '#element_validate' => array('profile_image_validate'),
+      );
+
+  //Background Image
+     $form['creative_cv_settings']['bgimage_upload']  = array(
+      '#type' => 'details',
+      '#title' => t('Background Image'),
+      '#description' => t('<p>please upload or enter the url of header background image</p>'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+      );
+      $form['creative_cv_settings']['bgimage_upload']['background_image_url'] = array(
+          '#type' => 'textfield',
+          '#title' => t('URL of the image'),
+          '#default_value' => theme_get_setting('background_image_url'),
+          '#size' => 40,
+          '#maxlength' => 120,
+      );
+      $form['creative_cv_settings']['bgimage_upload']['background_image'] = array(
+        '#type' => 'file',
+        '#title' => t('Upload Background Image'),
+        '#size' => 40,
+        '#attributes' => array('enctype' => 'multipart/form-data'),
+        '#element_validate' => array('background_image_validate'),
+      );
+}
+
+function profile_image_validate($element, FormStateInterface $form_state) {
+  global $base_url;
+
+  $validators = array('file_validate_extensions' => array('png gif jpg jpeg apng svg'));
+  $file = file_save_upload('profile_image', $validators, "public://", NULL, FILE_EXISTS_REPLACE);
+
+  if (!empty($file)) {
+    // change file's status from temporary to permanent and update file database
+    if ((is_object($file[0]) == 1)) {
+      $file[0]->status = FILE_STATUS_PERMANENT;
+      $file[0]->save();
+      $uri = $file[0]->getFileUri();
+      $file_url = file_create_url($uri);
+      $file_url = str_ireplace($base_url, '', $file_url);
+      $form_state->setValue('profile_image_url', $file_url);
+    }
+ }
+}
+
+function background_image_validate($element, FormStateInterface $form_state) {
+  global $base_url;
+
+  $validators = array('file_validate_extensions' => array('png gif jpg jpeg apng svg'));
+  $file = file_save_upload('background_image', $validators, "public://", NULL, FILE_EXISTS_REPLACE);
+
+  if (!empty($file)) {
+    // change file's status from temporary to permanent and update file database
+    if ((is_object($file[0]) == 1)) {
+      $file[0]->status = FILE_STATUS_PERMANENT;
+      $file[0]->save();
+      $uri = $file[0]->getFileUri();
+      $file_url = file_create_url($uri);
+      $file_url = str_ireplace($base_url, '', $file_url);
+      $form_state->setValue('background_image_url', $file_url);
+    }
+ }
+}
+
+function creative_cv_preprocess_views_view_grouping(&$variables) {
+  $variables['content'] = $variables['view']->style_plugin
+    ->renderGroupingSets($variables['rows'], $variables['grouping_level']);
+}

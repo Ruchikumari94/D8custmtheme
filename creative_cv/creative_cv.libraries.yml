@@ -1,0 +1,16 @@
+creative-styling:
+  css:
+    component:
+      css/aos.css: {}
+      css/bootstrap.min.css: {}
+      styles/main.css: {}
+      styles/custom_styles.css: {}
+  js:
+    # js/core/jquery.3.2.1.min.js: {}
+    js/core/popper.min.js: {}
+    js/core/bootstrap.min.js: {}
+    js/now-ui-kit.js: {}
+    js/aos.js: {}
+    scripts/main.js: {}
+  dependencies:
+    - core/jquery

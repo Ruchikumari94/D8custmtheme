@@ -1,0 +1,27 @@
+show_social_icon: 1
+#default value for social media
+facebook_url: 'https://www.facebook.com/iitbombay'
+twitter_url: 'https://twitter.com/iitbombay'
+google_plus_url: 'https://plus.google.com/+iitbombay'
+instagram_url: 'https://www.linkedin.com/edu/school?id=13496&trk=edu-cp-title'
+
+show_professional_icon: 1
+#default value for professional icon
+hire_me_url: 'ruchikumari.com'
+download_cv_url: 'ruchikumari/resume'
+
+user profile: 1
+#default value for user profile
+name: 'Ruchi kumari'
+specialization: 'Web Developer, DevOps'
+
+
+address: 'IIT Bombay'
+phone: +1718-111-0011
+email: siteadmin@gmail.com
+
+#default profile image
+profile_image_url: '/images/ref1.jpeg'
+
+#default background image
+background_image_url: '/images/cc-bg-1.jpg'

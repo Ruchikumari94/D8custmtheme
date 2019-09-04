@@ -1,0 +1,20 @@
+name: Creative CV
+type: theme
+description: 'Creative CV'
+core: 8.x
+base theme: false
+
+libraries:
+  - creative_cv/creative-styling
+
+regions:
+  header: Header
+  primary_menu: 'Primary menu'
+  page_top: 'Page top'
+  content_top: 'Content top'
+  content: 'Content'
+  # content_front: 'Content Front Page'
+  page_bottom: 'Page bottom'
+  map: 'Map'
+  footer_top: 'Footer Top'
+  footer: 'Footer'

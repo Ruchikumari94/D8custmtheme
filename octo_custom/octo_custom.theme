@@ -1,0 +1,165 @@
+<?php
+
+/**
+ * @file
+ * Functions to support theming in the SASS Starterkit subtheme.
+ */
+
+use Drupal\Core\Template\RenderWrapper;
+use Drupal\Core\Template\Attribute;
+use Drupal\Component\Utility\Html;
+use Drupal\Component\Utility\Xss;
+use Drupal\Component\Utility\SafeMarkup;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\system\Form\ThemeSettingsForm;
+use Drupal\file\Entity\File;
+use Drupal\Core\Url;
+use Drupal\file\Plugin\Core\Entity\FileInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+
+/**
+ * Implements hook_preprocess_HOOK() for html.html.twig.
+ */
+function octo_custom_preprocess_page(&$variables) {
+   // Add information about the number of sidebars.
+    if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
+      $variables['contentlayout'] = 'col-md-6';
+      $variables['sidebarfirst'] = 'col-md-3';
+      $variables['sidebarsecond'] = 'col-md-3';
+    }
+    elseif (!empty($variables['page']['sidebar_first'])) {
+      $variables['contentlayout'] = 'col-md-9 ';
+      $variables['sidebarfirst'] = 'col-md-3';
+    }
+    elseif (!empty($variables['page']['sidebar_second'])) {
+      $variables['contentlayout'] = 'col-md-9';
+      $variables['sidebarsecond'] = 'col-md-3';
+    }
+    else {
+      $variables['contentlayout'] = 'col-md-12';
+    }
+
+    // Add information about the number of sidebars.
+    if (!empty($variables['page']['footer_first']) && !empty($variables['page']['footer_second'])) {
+      $variables['footerfirst'] = 'col-md-6';
+      $variables['footersecond'] = 'col-md-6';
+    }
+    elseif (!empty($variables['page']['footer_first'])) {
+      $variables['footerfirst'] = 'col-md-12';
+    }
+    else {
+      $variables['footersecond'] = 'col-md-12';
+    }
+
+    // Slider
+  // Assign Variable for slider
+  if ($variables['is_front']) {
+    if (theme_get_setting('show_slideshow','octo_custom') == 1) {
+      $variables['show_slideshow'] = 1;
+      $variables['slider_content'] = octo_custom_get_slider_content();
+    }
+  }
+}
+
+/**
+ * Slider
+ * Implements custom function for get slider content.
+ */
+function octo_custom_get_slider_content() {
+  $slider_content = array();
+  for ($i = 1; $i <= theme_get_setting('no_of_slides'); $i++) {
+    $fid = theme_get_setting('slide_image_path'.$i,'octo_custom');
+    if (!empty($fid)) {
+      $file = file_load($fid[0]);
+      $uri = $file->getFileUri();
+      $path = file_create_url($uri);
+    }
+    else {
+      $path = base_path() . drupal_get_path('theme', 'octo_custom') . theme_get_setting('slide_image_path_' . $i, 'octo_custom');
+    }
+    $slider_content[$i] = '<li>
+      <img src="' . $path . '" alt="Slider Banner" />
+      <div class="slider-caption">
+        <h2 class="slider-title">' . theme_get_setting('slide_title_' . $i, 'octo_custom').'</h2>
+        <div class="clearfix"><p class="slider-description">' . theme_get_setting('slide_description_' . $i, 'octo_custom').'</p></div>
+        <a href=' . theme_get_setting('slide_url_' . $i, 'octo_custom') . ' class="more-link">Read more</a>
+      </div>
+    </li>';
+  }
+  return $slider_content;
+}
+
+
+/**
+ * Implements hook_form_system_theme_settings_alter().
+ */
+function octo_custom_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+
+//Slideshow configure 
+  $form['octo_custom_settings']['slideshow'] = array(
+    '#type' => 'details',
+    '#title' => t('Front Page Slideshow'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  $form['octo_custom_settings']['slideshow']['no_of_slides'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of slides'),
+    '#default_value' => theme_get_setting('no_of_slides'),
+    '#description'  => t("Enter the number of slides required & Save configuration"),
+    '#markup' => '<div class="messages messages--warning">Clear caches after making any changes in theme settings. <a href="../../config/development/performance">Click here to clear cache</a></div>',
+  );
+  $form['octo_custom_settings']['slideshow']['show_slideshow'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show Slideshow'),
+    '#default_value' => theme_get_setting('show_slideshow'),
+    '#description'   => t("Show/Hide Slideshow in home page"),
+  );
+  $form['octo_custom_settings']['slideshow']['slide'] = array(
+    '#markup' => t('Change the banner image, title, description and link using below fieldset'),
+  );
+
+  for ($i = 1; $i <= theme_get_setting('no_of_slides'); $i++) {
+    $form['octo_custom_settings']['slideshow']['slide' . $i] = array(
+      '#type' => 'details',
+      '#title' => t('Slide '.$i),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_image_path' . $i] = array(
+      '#type' => 'managed_file',
+      '#title' => t('Slide '.$i.' Image'),
+      '#default_value' => theme_get_setting('slide_image_path'.$i,'octo_custom'),
+      '#upload_location' => 'public://',
+    );
+    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_title_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Slide '.$i.' Title'),
+      '#default_value' => theme_get_setting('slide_title_' . $i,'octo_custom'),
+    );
+    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_description_' . $i] = array(
+      '#type' => 'textarea',
+      '#title' => t('Slide '.$i.' Description'),
+      '#default_value' => theme_get_setting('slide_description_' . $i,'octo_custom'),
+    );    
+    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_url_' . $i] = array(
+      '#type' => 'textfield',
+      '#title' => t('Slide '.$i.' URL'),
+      '#default_value' => theme_get_setting('slide_url_' . $i,'octo_custom'),
+    );
+
+    // Make the uploaded images permanent.
+    $image = theme_get_setting('slide_image_path'.$i,'octo_custom');
+    if(!empty($image)){
+      $file = File::load($image[0]);
+      $file->status = FILE_STATUS_PERMANENT;
+      $file->save();
+      $file_usage = \Drupal::service('file.usage');
+      $file_usage_check = $file_usage->listUsage($file);
+      if (empty($file_usage_check)) {
+        $file_usage->add($file, 'octo_custom', 'theme', $image[0]);
+      }
+    }
+
+  }
+}

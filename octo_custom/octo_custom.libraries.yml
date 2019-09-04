@@ -1,0 +1,27 @@
+global-styling:
+  version: VERSION
+  css:
+    component:
+      css/style.css: {}
+  js:
+    js/global.js: {}
+
+bootstrap:
+  css:
+    theme:
+      bootstrap/css/bootstrap.min.css: {}
+  js:
+    bootstrap/js/bootstrap.min.js: {}
+  dependencies:
+    - core/jquery
+
+# flexslider
+flexslider:
+  version: 1.x
+  css:
+    theme:
+      flexslider/css/flexslider.css: {}
+  js:
+    flexslider/js/jquery.flexslider-min.js: {}
+  dependencies:
+    - core/jquery

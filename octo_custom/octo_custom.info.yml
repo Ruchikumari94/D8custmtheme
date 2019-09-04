@@ -1,0 +1,21 @@
+name: Octo custom
+type: theme
+description: 'Fully Custom'
+# version: VERSION
+core: 8.x
+base theme: classy
+
+libraries:
+  - octo_custom/global-styling
+  - octo_custom/bootstrap
+  - octo_custom/flexslider
+
+regions:
+  header: Header
+  primary_menu: 'Primary menu'
+  help: Help  
+  content: Content
+  sidebar_first: 'Sidebar first'
+  sidebar_second: 'Sidebar second' 
+  footer_first: 'Footer first'
+  footer_second: 'Footer second'

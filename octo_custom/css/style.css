@@ -1,0 +1,56 @@
+.fixed-top {
+	top: unset!important;
+}
+
+main.page-container {
+	padding-top: 80px;
+}
+
+nav.navbar {
+	background-color: darkcyan;
+}
+
+.region-content{
+	min-height: 350px;
+}
+
+.flexslider .slider-caption {
+	position: absolute;
+  top: 30%;
+  background: #00000082;
+  color: #ffffff;
+  left: 15%;
+  padding: 15px;
+}
+
+.flexslider .slider-caption a.more-link {
+	text-align: left;
+  border: 1px solid #fff;
+  padding: 10px;
+  color: #e44718;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline;
+  transition: all 0.5s;
+}
+
+.flexslider .slider-caption a.more-link:hover {
+	background-color: #e44718;
+	color: #fff;
+	text-decoration: none;
+}
+
+
+footer.footer {
+	background-color: #557761;
+	color: #ffffff;
+	padding: 15px;
+}
+
+.region-footer-second h2 {
+	margin-left: 65%;
+}
+
+form#search-block-form input.form-submit{
+	background-color: cadetblue;
+}

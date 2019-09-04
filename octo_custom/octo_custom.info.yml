@@ -1,6 +1,6 @@
-name: Octo custom modify
+name: Octo custom
 type: theme
-description: 'Fully Custom'
+description: 'Fully Custom theme'
 # version: VERSION
 core: 8.x
 base theme: classy

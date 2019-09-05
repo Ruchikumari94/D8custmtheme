@@ -20,6 +20,11 @@ use Drupal\Core\Config\ConfigFactoryInterface;
 /**
  * Implements hook_preprocess_HOOK() for html.html.twig.
  */
+
+// global $theme_name, $path_to_octo_custom;
+$theme_name = \Drupal::theme()->getActiveTheme()->getName();
+$path_to_octo_custom = drupal_get_path('theme', 'octo_custom');
+
 function octo_custom_preprocess_page(&$variables) {
    // Add information about the number of sidebars.
     if (!empty($variables['page']['sidebar_first']) && !empty($variables['page']['sidebar_second'])) {
@@ -62,6 +67,19 @@ function octo_custom_preprocess_page(&$variables) {
 }
 
 /**
+ * Implements hook_preprocess_page() for block templates.
+ */
+
+function octo_custom_preprocess_block(&$variables) {
+
+  $variables['show_social_icon'] = theme_get_setting('show_social_icon');
+  $variables['facebook_url'] = theme_get_setting('facebook_url');
+  $variables['google_plus_url'] = theme_get_setting('google_plus_url');
+  $variables['twitter_url'] = theme_get_setting('twitter_url');
+  $variables['instagram_url'] = theme_get_setting('instagram_url');
+}
+
+/**
  * Slider
  * Implements custom function for get slider content.
  */
@@ -95,58 +113,92 @@ function octo_custom_get_slider_content() {
  */
 function octo_custom_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
 
-//Slideshow configure 
-  $form['octo_custom_settings']['slideshow'] = array(
-    '#type' => 'details',
-    '#title' => t('Front Page Slideshow'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-  $form['octo_custom_settings']['slideshow']['no_of_slides'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Number of slides'),
-    '#default_value' => theme_get_setting('no_of_slides'),
-    '#description'  => t("Enter the number of slides required & Save configuration"),
-    '#markup' => '<div class="messages messages--warning">Clear caches after making any changes in theme settings. <a href="../../config/development/performance">Click here to clear cache</a></div>',
-  );
-  $form['octo_custom_settings']['slideshow']['show_slideshow'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Show Slideshow'),
-    '#default_value' => theme_get_setting('show_slideshow'),
-    '#description'   => t("Show/Hide Slideshow in home page"),
-  );
-  $form['octo_custom_settings']['slideshow']['slide'] = array(
-    '#markup' => t('Change the banner image, title, description and link using below fieldset'),
-  );
-
-  for ($i = 1; $i <= theme_get_setting('no_of_slides'); $i++) {
-    $form['octo_custom_settings']['slideshow']['slide' . $i] = array(
+   //Social Icon Link
+    $form['octo_custom_settings']['social_icon'] = array(
       '#type' => 'details',
-      '#title' => t('Slide '.$i),
+      '#title' => t('Social Media Link'),
       '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
+      '#collapsed' => FALSE,
     );
-    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_image_path' . $i] = array(
-      '#type' => 'managed_file',
-      '#title' => t('Slide '.$i.' Image'),
-      '#default_value' => theme_get_setting('slide_image_path'.$i,'octo_custom'),
-      '#upload_location' => 'public://',
+    $form['octo_custom_settings']['social_icon']['show_social_icon'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show Social Icons'),
+      '#default_value' => theme_get_setting('show_social_icon'),
+      '#description'   => t("Show/Hide Social media links"),
     );
-    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_title_' . $i] = array(
+    $form['octo_custom_settings']['social_icon']['facebook_url'] = array(
       '#type' => 'textfield',
-      '#title' => t('Slide '.$i.' Title'),
-      '#default_value' => theme_get_setting('slide_title_' . $i,'octo_custom'),
+      '#title' => t('Facebook URL'),
+      '#default_value' => theme_get_setting('facebook_url'),
     );
-    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_description_' . $i] = array(
-      '#type' => 'textarea',
-      '#title' => t('Slide '.$i.' Description'),
-      '#default_value' => theme_get_setting('slide_description_' . $i,'octo_custom'),
-    );    
-    $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_url_' . $i] = array(
+    $form['octo_custom_settings']['social_icon']['google_plus_url'] = array(
       '#type' => 'textfield',
-      '#title' => t('Slide '.$i.' URL'),
-      '#default_value' => theme_get_setting('slide_url_' . $i,'octo_custom'),
+      '#title' => t('Google plus URL'),
+      '#default_value' => theme_get_setting('google_plus_url'),
     );
+    $form['octo_custom_settings']['social_icon']['twitter_url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Twitter URL'),
+      '#default_value' => theme_get_setting('twitter_url'),
+    );
+    $form['octo_custom_settings']['social_icon']['instagram_url'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Instagram URL'),
+      '#default_value' => theme_get_setting('instagram_url'),
+    );
+
+  //Slideshow configure 
+    $form['octo_custom_settings']['slideshow'] = array(
+      '#type' => 'details',
+      '#title' => t('Front Page Slideshow'),
+      '#collapsible' => TRUE,
+      '#collapsed' => FALSE,
+    );
+    $form['octo_custom_settings']['slideshow']['no_of_slides'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Number of slides'),
+      '#default_value' => theme_get_setting('no_of_slides'),
+      '#description'  => t("Enter the number of slides required & Save configuration"),
+      '#markup' => '<div class="messages messages--warning">Clear caches after making any changes in theme settings. <a href="../../config/development/performance">Click here to clear cache</a></div>',
+    );
+    $form['octo_custom_settings']['slideshow']['show_slideshow'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Show Slideshow'),
+      '#default_value' => theme_get_setting('show_slideshow'),
+      '#description'   => t("Show/Hide Slideshow in home page"),
+    );
+    $form['octo_custom_settings']['slideshow']['slide'] = array(
+      '#markup' => t('Change the banner image, title, description and link using below fieldset'),
+    );
+
+    for ($i = 1; $i <= theme_get_setting('no_of_slides'); $i++) {
+      $form['octo_custom_settings']['slideshow']['slide' . $i] = array(
+        '#type' => 'details',
+        '#title' => t('Slide '.$i),
+        '#collapsible' => TRUE,
+        '#collapsed' => TRUE,
+      );
+      $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_image_path' . $i] = array(
+        '#type' => 'managed_file',
+        '#title' => t('Slide '.$i.' Image'),
+        '#default_value' => theme_get_setting('slide_image_path'.$i,'octo_custom'),
+        '#upload_location' => 'public://',
+      );
+      $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_title_' . $i] = array(
+        '#type' => 'textfield',
+        '#title' => t('Slide '.$i.' Title'),
+        '#default_value' => theme_get_setting('slide_title_' . $i,'octo_custom'),
+      );
+      $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_description_' . $i] = array(
+        '#type' => 'textarea',
+        '#title' => t('Slide '.$i.' Description'),
+        '#default_value' => theme_get_setting('slide_description_' . $i,'octo_custom'),
+      );    
+      $form['octo_custom_settings']['slideshow']['slide' . $i]['slide_url_' . $i] = array(
+        '#type' => 'textfield',
+        '#title' => t('Slide '.$i.' URL'),
+        '#default_value' => theme_get_setting('slide_url_' . $i,'octo_custom'),
+      );
 
     // Make the uploaded images permanent.
     $image = theme_get_setting('slide_image_path'.$i,'octo_custom');
@@ -162,4 +214,9 @@ function octo_custom_form_system_theme_settings_alter(&$form, \Drupal\Core\Form\
     }
 
   }
+
+}
+
+function octo_custom_form_search_block_form_alter(&$form, FormStateInterface $form_state) {
+  $form['keys']['#attributes']['placeholder'] = t('search');
 }

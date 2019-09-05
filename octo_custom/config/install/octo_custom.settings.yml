@@ -1,3 +1,10 @@
+show_social_icon: 1
+#default value for social media
+facebook_url: 'https://www.facebook.com/iitbombay'
+twitter_url: 'https://twitter.com/iitbombay'
+google_plus_url: 'https://plus.google.com/+iitbombay'
+instagram_url: 'https://www.linkedin.com/edu/school?id=13496&trk=edu-cp-title'
+
 #Slider Default Values
 no_of_slides: 2
 

@@ -49,7 +49,13 @@
   <header role="banner">
     <nav class="navbar navbar-expand-sm navbar-dark fixed-top">
     {{ page.header }}
-    {{ page.primary_menu }}
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        {{ page.primary_menu }}
+      </div>
+    {{ page.search }}
   </nav>
   </header>
 
@@ -112,5 +118,9 @@
       </div>
     </footer>
     {% endif %}
-
+    {% if page.copyright %}
+      <div class="footer-copyright text-center">
+        {{ page.copyright }}
+      </div>
+    {% endif %}
 </div>{# /.layout-container #}

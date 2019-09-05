@@ -25,3 +25,8 @@ flexslider:
     flexslider/js/jquery.flexslider-min.js: {}
   dependencies:
     - core/jquery
+
+font-awesome:
+  css:
+    theme:
+      //maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css: {}

@@ -15,12 +15,12 @@ nav.navbar {
 }
 
 .flexslider .slider-caption {
-	position: absolute;
   top: 30%;
-  background: #00000082;
+  background: #150e0ef5;
   color: #ffffff;
   left: 15%;
   padding: 15px;
+  text-align: center; 
 }
 
 .flexslider .slider-caption a.more-link {
@@ -44,13 +44,108 @@ nav.navbar {
 footer.footer {
 	background-color: #557761;
 	color: #ffffff;
-	padding: 15px;
+	padding: 10px;
 }
 
-.region-footer-second h2 {
-	margin-left: 65%;
-}
-
-form#search-block-form input.form-submit{
+form#search-block-form input.form-submit {
 	background-color: cadetblue;
+}
+
+#search-block-form{
+  display: table;
+  width: 100%;  
+}
+
+#search-block-form .form-item,
+#search-block-form .form-actions{
+  display: table-cell;
+  vertical-align: top;
+}
+
+#search-block-form input{
+  width: 100%;
+}
+@media (min-width: 767px){
+	.block-search {
+		margin-bottom: 0px!important;
+	}
+}
+
+#search-block-form input[type="submit"] {
+		background: url(../images/search1.png) no-repeat center #29313C;
+    font-size: 0;
+    width: 100%;
+    height: 30px;
+    padding: 14px;
+    vertical-align: top;
+    -moz-border-radius: 0 20px 20px 0;
+    -webkit-border-radius: 0;
+    border-radius: 0 5px 5px 0;
+    border: none;
+}
+
+#search-block-form input[type="search"] {
+		width: 100%;
+    /*height: 30px;*/
+    -moz-border-radius: 20px 0 0 20px;
+    -webkit-border-radius: 20px;
+    border-radius: 5px 0 0 5px;
+    border: none;
+  	height: 28px;
+}
+
+.footer-copyright {
+	background-color: cadetblue;
+  padding: 5px 5px;
+  color: #fff;
+}
+.footer-copyright p {
+	margin-bottom: 0px;
+}
+.footer-copyright a {
+	color: #fff;
+}
+.footer-copyright a:hover {
+	color: #25d875;
+}
+
+.region a.btn-link {
+	color: #fff;
+}
+
+.region-footer-second #block-links {
+	float: right;
+}
+
+.region-footer-second #block-links a.btn {
+  border-radius: 50%;
+  box-shadow: 0 5px 11px 0 rgba(0,0,0,.18), 0 4px 15px 0 rgba(0,0,0,.15);
+  position: relative;
+  z-index: 1;
+  vertical-align: middle;
+  display: inline-block;
+  overflow: hidden;
+  transition: all .2s ease-in-out;
+  margin: 10px;
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  width: 47px;
+  height: 47px;
+}
+.region-footer-second #block-links a.btn i.fa {
+	font-size: 18px;
+}
+
+.region-footer-second #block-links a.cc-facebook:hover {
+	background-color: cornflowerblue;
+}
+.region-footer-second #block-links a.cc-twitter:hover {
+	background-color: darkblue;
+}
+.region-footer-second #block-links a.cc-google-plus:hover {
+	background-color: coral;
+}
+.region-footer-second #block-links a.cc-instagram:hover {
+	background-color: brown;
 }

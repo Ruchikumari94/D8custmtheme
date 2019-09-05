@@ -9,13 +9,16 @@ libraries:
   - octo_custom/global-styling
   - octo_custom/bootstrap
   - octo_custom/flexslider
+  - octo_custom/font-awesome
 
 regions:
   header: Header
   primary_menu: 'Primary menu'
-  help: Help  
+  search: 'Search'
+  help: Help 
   content: Content
   sidebar_first: 'Sidebar first'
-  sidebar_second: 'Sidebar second' 
+  sidebar_second: 'Sidebar second'
   footer_first: 'Footer first'
   footer_second: 'Footer second'
+  copyright: 'Copyright'
